@@ -1,0 +1,95 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{FCBDF6CA-6D58-4E73-AB23-26D2767501A9}"
+	ProjectSection(SolutionItems) = preProject
+		Build\.editorconfig = Build\.editorconfig
+		Build\.gitignore = Build\.gitignore
+		Build\build.props = Build\build.props
+		Build\build.targets = Build\build.targets
+		Build\conventions.props = Build\conventions.props
+		Build\conventions.targets = Build\conventions.targets
+		Build\LICENSE = Build\LICENSE
+		Build\packages.props = Build\packages.props
+		Build\README.md = Build\README.md
+		Build\settings.props = Build\settings.props
+		Build\source.props = Build\source.props
+		Build\versions.props = Build\versions.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{82F51994-2872-4E64-A51F-5785E6E01840}"
+	ProjectSection(SolutionItems) = preProject
+		Build\apps\Directory.Build.props = Build\apps\Directory.Build.props
+		Build\apps\Directory.Build.targets = Build\apps\Directory.Build.targets
+		Build\apps\packages.props = Build\apps\packages.props
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\apps\Build\Build.csproj", "{810A7794-9B80-4D30-834D-7F629779053D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build.Abstractions", "Build\apps\Build.Abstractions\Build.Abstractions.csproj", "{01A3F328-3EF0-4B0C-B88D-9A332DE4E6C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{DEA98DC1-8E8C-4024-8D6D-3ADDA19B64BF}"
+	ProjectSection(SolutionItems) = preProject
+		Build\.config\dotnet-tools.json = Build\.config\dotnet-tools.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{3E233261-9EBB-4F79-B840-BD73052C8428}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SailthruSDK", "libs\SailthruSDK\SailthruSDK.csproj", "{562C63D3-F1F8-4929-B856-1463283DFC93}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{D4D1448C-41ED-4E4C-B967-7D26421DEC43}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		.gitmodules = .gitmodules
+		build.cmd = build.cmd
+		build.sh = build.sh
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{89340FB5-E457-4182-A510-7F1D8DD97371}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SailthruSDK.Tests", "tests\SailthruSDK.Tests\SailthruSDK.Tests.csproj", "{2E0DE426-D135-4710-80B5-173338D364C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{810A7794-9B80-4D30-834D-7F629779053D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{810A7794-9B80-4D30-834D-7F629779053D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{810A7794-9B80-4D30-834D-7F629779053D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{810A7794-9B80-4D30-834D-7F629779053D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01A3F328-3EF0-4B0C-B88D-9A332DE4E6C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01A3F328-3EF0-4B0C-B88D-9A332DE4E6C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01A3F328-3EF0-4B0C-B88D-9A332DE4E6C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01A3F328-3EF0-4B0C-B88D-9A332DE4E6C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{562C63D3-F1F8-4929-B856-1463283DFC93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{562C63D3-F1F8-4929-B856-1463283DFC93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{562C63D3-F1F8-4929-B856-1463283DFC93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{562C63D3-F1F8-4929-B856-1463283DFC93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E0DE426-D135-4710-80B5-173338D364C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E0DE426-D135-4710-80B5-173338D364C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E0DE426-D135-4710-80B5-173338D364C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E0DE426-D135-4710-80B5-173338D364C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{82F51994-2872-4E64-A51F-5785E6E01840} = {FCBDF6CA-6D58-4E73-AB23-26D2767501A9}
+		{810A7794-9B80-4D30-834D-7F629779053D} = {82F51994-2872-4E64-A51F-5785E6E01840}
+		{01A3F328-3EF0-4B0C-B88D-9A332DE4E6C6} = {82F51994-2872-4E64-A51F-5785E6E01840}
+		{DEA98DC1-8E8C-4024-8D6D-3ADDA19B64BF} = {82F51994-2872-4E64-A51F-5785E6E01840}
+		{562C63D3-F1F8-4929-B856-1463283DFC93} = {3E233261-9EBB-4F79-B840-BD73052C8428}
+		{2E0DE426-D135-4710-80B5-173338D364C6} = {89340FB5-E457-4182-A510-7F1D8DD97371}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7D62062-4558-4545-9EE0-3A9B24CFD70D}
+	EndGlobalSection
+EndGlobal
