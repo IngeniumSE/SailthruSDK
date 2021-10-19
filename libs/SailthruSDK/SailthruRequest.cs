@@ -5,13 +5,14 @@
 	/// <summary>
 	/// Represents a Sailthru request.
 	/// </summary>
-	public class SailthruRequest<TModel>
-		where TModel : notnull
+	/// <typeparam name="TRequest">The request type.</typeparam>
+	public class SailthruRequest<TRequest>
+		where TRequest : notnull
 	{
 		public SailthruRequest(
 			HttpMethod method,
 			string endpoint,
-			TModel model)
+			TRequest model)
 		{
 			Method = method;
 			Endpoint = Ensure.IsNotNullOrEmpty(endpoint, nameof(endpoint));
@@ -31,6 +32,6 @@
 		/// <summary>
 		/// Gets the model.
 		/// </summary>
-		public TModel Model {  get; }
+		public TRequest Model {  get; }
 	}
 }

@@ -35,8 +35,10 @@
 			_settings = Ensure.IsNotNull(settings, nameof(settings)).Value;
 		}
 
-		internal async Task<SailthruResponse> SendAsync<TModel>(SailthruRequest<TModel> request, CancellationToken cancellationToken = default)
-			where TModel : notnull
+		internal async Task<SailthruResponse<TResponse>> SendAsync<TRequest, TResponse>(
+			SailthruRequest<TRequest> request, 
+			CancellationToken cancellationToken = default)
+			where TRequest : notnull
 		{
 			Ensure.IsNotNull(request, nameof(request));
 
@@ -50,6 +52,13 @@
 
 			var httpResponse = await _http.SendAsync(httpRequest, cancellationToken)
 				.ConfigureAwait(false);
+
+			if (httpResponse.IsSuccessStatusCode)
+			{
+				return SailthruResponse<TResponse>.Success();
+			}
+
+			return SailthruResponse<TResponse>.Error();
 		}
 	}
 }

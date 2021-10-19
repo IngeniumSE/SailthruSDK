@@ -37,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{DEA9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{3E233261-9EBB-4F79-B840-BD73052C8428}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SailthruSDK", "libs\SailthruSDK\SailthruSDK.csproj", "{562C63D3-F1F8-4929-B856-1463283DFC93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SailthruSDK", "libs\SailthruSDK\SailthruSDK.csproj", "{562C63D3-F1F8-4929-B856-1463283DFC93}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{D4D1448C-41ED-4E4C-B967-7D26421DEC43}"
 	ProjectSection(SolutionItems) = preProject
@@ -53,7 +53,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{D4D1448C-4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{89340FB5-E457-4182-A510-7F1D8DD97371}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SailthruSDK.Tests", "tests\SailthruSDK.Tests\SailthruSDK.Tests.csproj", "{2E0DE426-D135-4710-80B5-173338D364C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SailthruSDK.Tests", "tests\SailthruSDK.Tests\SailthruSDK.Tests.csproj", "{2E0DE426-D135-4710-80B5-173338D364C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SailthruSDK.Extensions.DependencyInjection", "libs\SailthruSDK.Extensions.DependencyInjection\SailthruSDK.Extensions.DependencyInjection.csproj", "{806DCE4B-D0BD-4AA5-B8BC-502B69ABFAF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{2E0DE426-D135-4710-80B5-173338D364C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E0DE426-D135-4710-80B5-173338D364C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E0DE426-D135-4710-80B5-173338D364C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{806DCE4B-D0BD-4AA5-B8BC-502B69ABFAF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{806DCE4B-D0BD-4AA5-B8BC-502B69ABFAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{806DCE4B-D0BD-4AA5-B8BC-502B69ABFAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{806DCE4B-D0BD-4AA5-B8BC-502B69ABFAF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +94,7 @@ Global
 		{DEA98DC1-8E8C-4024-8D6D-3ADDA19B64BF} = {82F51994-2872-4E64-A51F-5785E6E01840}
 		{562C63D3-F1F8-4929-B856-1463283DFC93} = {3E233261-9EBB-4F79-B840-BD73052C8428}
 		{2E0DE426-D135-4710-80B5-173338D364C6} = {89340FB5-E457-4182-A510-7F1D8DD97371}
+		{806DCE4B-D0BD-4AA5-B8BC-502B69ABFAF3} = {3E233261-9EBB-4F79-B840-BD73052C8428}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7D62062-4558-4545-9EE0-3A9B24CFD70D}

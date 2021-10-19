@@ -1,12 +1,55 @@
 ﻿namespace SailthruSDK
 {
+	using System;
 	using System.Net.Http;
 	using System.Threading;
 	using System.Threading.Tasks;
 
+	/// <summary>
+	/// Represents a Sailthru user.
+	/// </summary>
 	public class SailthruUser
 	{
+		/// <summary>
+		/// Gets recent user activity.
+		/// </summary>
+		public SailthruUserActivity? Activity { get; }
+	}
 
+	/// <summary>
+	/// Represents sailthru user activity.
+	/// </summary>
+	public struct SailthruUserActivity
+	{
+		/// <summary>
+		/// The date and time the user's most recent click.
+		/// </summary>
+		public DateTimeOffset? ClickTime { get; }
+
+		/// <summary>
+		/// The date and time of the user's profile creation.
+		/// </summary>
+		public DateTimeOffset? CreateTime { get; }
+
+		/// <summary>
+		/// The date and time the user's most recent log in.
+		/// </summary>
+		public DateTimeOffset? LoginTime { get; }
+
+		/// <summary>
+		/// The date and time the user's most recent email open.
+		/// </summary>
+		public DateTimeOffset? OpenTime { get; }
+
+		/// <summary>
+		/// The date and time the user was added to their first list.
+		/// </summary>
+		public DateTimeOffset? SignupTime { get; }
+
+		/// <summary>
+		/// The date and time the user's most recent view.
+		/// </summary>
+		public DateTimeOffset? ViewTime { get; }
 	}
 
 	/// <summary>
@@ -118,8 +161,17 @@
 				SailthruEndpoints.User,
 				model);
 
-			var response = await client.SendAsync(request, cancellationToken)
+			var response = await client.SendAsync<GetUserRequest, SailthruUser>(
+				request, 
+				cancellationToken)
 				.ConfigureAwait(false);
+
+			if (response is { IsError: true })
+			{
+				return default;
+			}
+
+			return response.Result;
 		}
 	}
 }
