@@ -23,7 +23,7 @@
 		/// <param name="configure">The configure delegate.</param>
 		/// <returns>The services collection.</returns>
 		public static IServiceCollection AddSailthru(
-			IServiceCollection services,
+			this IServiceCollection services,
 			Action<SailthruSettings> configure)
 		{
 			Ensure.IsNotNull(services, nameof(services));
@@ -43,13 +43,13 @@
 		/// <param name="settings">The Sailthru settings.</param>
 		/// <returns>The services collection.</returns>
 		public static IServiceCollection AddSailthru(
-			IServiceCollection services,
+			this IServiceCollection services,
 			SailthruSettings settings)
 		{
 			Ensure.IsNotNull(services, nameof(services));
 			Ensure.IsNotNull(settings, nameof(settings));
 
-			services.AddSingleton(Options.Create(settings));
+			services.AddSingleton(settings.AsOptions());
 
 			AddCoreServices(services);
 
@@ -60,16 +60,16 @@
 		/// Adds Sailthru services to the given services collection.
 		/// </summary>
 		/// <param name="services">The services collection.</param>
-		/// <param name="configurationSection">The configuration section.</param>
+		/// <param name="configuration">The configuration.</param>
 		/// <returns>The services collection.</returns>
 		public static IServiceCollection AddSailthru(
-			IServiceCollection services,
-			IConfigurationSection configurationSection)
+			this IServiceCollection services,
+			IConfiguration configuration)
 		{
 			Ensure.IsNotNull(services, nameof(services));
-			Ensure.IsNotNull(configurationSection, nameof(configurationSection));
+			Ensure.IsNotNull(configuration, nameof(configuration));
 
-			services.Configure<SailthruSettings>(configurationSection);
+			services.Configure<SailthruSettings>(configuration.GetSection(SailthruSettings.ConfigurationSection));
 
 			AddCoreServices(services);
 

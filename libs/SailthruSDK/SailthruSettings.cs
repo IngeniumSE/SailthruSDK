@@ -2,11 +2,15 @@
 {
 	using FluentValidation;
 
+	using Microsoft.Extensions.Options;
+
 	/// <summary>
 	/// Represents settings for configuring the Sailthru SDK.
 	/// </summary>
 	public class SailthruSettings
 	{
+		public const string ConfigurationSection = "Sailthru";
+
 		/// <summary>
 		/// Gets or sets the API key.
 		/// </summary>
@@ -21,6 +25,19 @@
 		/// Gets or sets the base URL.
 		/// </summary>
 		public string BaseUrl { get; set; } = "https://api.sailthru.com";
+
+		/// <summary>
+		/// Returns the settings as an options instance.
+		/// </summary>
+		/// <returns>The options instance.</returns>
+		public IOptions<SailthruSettings> AsOptions()
+			=> Options.Create(this);
+
+		/// <summary>
+		/// Validates the current instance.
+		/// </summary>
+		public void Validate()
+			=> new SailthruSettingsValidator().ValidateAndThrow(this);
 	}
 
 	/// <summary>
@@ -28,7 +45,6 @@
 	/// </summary>
 	public class SailthruSettingsValidator : AbstractValidator<SailthruSettings>
 	{
-		public const string ConfigurationSection = "Sailthru";
 		public static readonly SailthruSettingsValidator Instance = new SailthruSettingsValidator();
 
 		public SailthruSettingsValidator()

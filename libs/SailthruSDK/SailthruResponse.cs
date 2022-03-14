@@ -28,8 +28,8 @@
 		/// Creates a success response.
 		/// </summary>
 		/// <returns>The Sailthru response.</returns>
-		public static SailthruResponse<TResponse> Success()
-			=> new SailthruResponse<TResponse>();
+		public static SailthruResponse<TResponse> Success(TResponse? response)
+			=> new SailthruResponse<TResponse>(response);
 
 		/// <summary>
 		/// Creates an error response.

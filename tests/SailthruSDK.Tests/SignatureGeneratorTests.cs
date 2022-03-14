@@ -15,8 +15,9 @@
 
 			// Act
 			string result = SignatureGenerator.Generate(
-				"abcsecret",
 				"123key",
+				"abcsecret",
+				"json",
 				"{\"id\":\"neil@example.com\"}");
 
 			// Assert
