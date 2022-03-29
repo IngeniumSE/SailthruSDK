@@ -6,6 +6,7 @@
 
 	using Microsoft.Extensions.Configuration;
 
+	using SailthruSDK.Purchase;
 	using SailthruSDK.User;
 
 	class Program
@@ -34,28 +35,36 @@
 			//	}
 			//);
 
-			var user = await client.UpsertUserAsync(
+			//var user = await client.UpsertUserAsync(
+			//	"me+spaseekers@matthewabbott.dev",
+			//	optOutEmailStatus: OptOutStatus.All,
+			//	keys: new Map<string>
+			//	{
+			//		[SailthruUserKeyType.Email] = "me@matthewabbott.dev"
+			//	},
+			//	keyConflict: KeyConflict.Merge,
+			//	fields: new SailthruUserFields
+			//	{
+			//		Activity = true,
+			//		Engagement = true,
+			//		Device = true,
+			//		Keys = true,
+			//		Lists = true,
+			//		Lifetime = true,
+			//		OptOutStatus = true,
+			//		PurchaseIncomplete = 10,
+			//		Purchases = 10,
+			//		SmartLists = true,
+			//		Vars = true
+			//	});
+
+			var response = await client.UpsertPurchaseAsync(
 				"me+spaseekers@matthewabbott.dev",
-				optOutEmailStatus: OptOutStatus.All,
-				keys: new Map<string>
-				{
-					[SailthruUserKeyType.Email] = "me@matthewabbott.dev"
+				new[] {
+					new PurchaseItem("MonetaryVoucher-50", "£50.00 - Voucher", 5000, 1, "https://www.spaseekers.com/spa-vouchers?value=50.00")
 				},
-				keyConflict: KeyConflict.Merge,
-				fields: new SailthruUserFields
-				{
-					Activity = true,
-					Engagement = true,
-					Device = true,
-					Keys = true,
-					Lists = true,
-					Lifetime = true,
-					OptOutStatus = true,
-					PurchaseIncomplete = 10,
-					Purchases = 10,
-					SmartLists = true,
-					Vars = true
-				});
+				incomplete: false
+				);
 		}
 
 		static SailthruSettings GetSettings()

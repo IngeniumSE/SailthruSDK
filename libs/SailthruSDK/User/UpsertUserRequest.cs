@@ -2,7 +2,6 @@
 {
 	using System;
 	using System.Text.Json;
-	using System.Text.Json.Serialization;
 
 	using SailthruSDK.Converters;
 
@@ -26,7 +25,7 @@
 			Map<bool>? lists = default,
 			Map<bool>? templates = default,
 			Map<string>? vars = default,
-			OptOutStatus? optOutEmailStatus = default, 
+			OptOutStatus? optOutEmailStatus = default,
 			bool? optOutSms = default,
 			SailthruUserFields? fields = default)
 		{
@@ -38,8 +37,8 @@
 			Lists = lists;
 			Templates = templates;
 			Vars = vars;
-			OptOutEmailStatus = optOutEmailStatus;	
-			OptOutSmsStatus = optOutSms;	
+			OptOutEmailStatus = optOutEmailStatus;
+			OptOutSmsStatus = optOutSms;
 			Fields = ToMap(fields);
 		}
 

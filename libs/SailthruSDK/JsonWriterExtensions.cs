@@ -57,6 +57,36 @@
 			}
 		}
 
+		public static void WriteNumberProperty(
+			this Utf8JsonWriter writer,
+			string key,
+			int value,
+			JsonSerializerOptions options)
+		{
+			if (writer is null)
+			{
+				throw new ArgumentNullException(nameof(writer));
+			}
+
+			writer.WritePropertyName(GetName(key, options));
+			writer.WriteNumberValue(value);
+		}
+
+		public static void WriteBooleanProperty(
+			this Utf8JsonWriter writer,
+			string key,
+			bool value,
+			JsonSerializerOptions options)
+		{
+			if (writer is null)
+			{
+				throw new ArgumentNullException(nameof(writer));
+			}
+
+			writer.WritePropertyName(GetName(key, options));
+			writer.WriteBooleanValue(value);
+		}
+
 		public static void WriteMapProperty<TValue>(
 			this Utf8JsonWriter writer,
 			string key,

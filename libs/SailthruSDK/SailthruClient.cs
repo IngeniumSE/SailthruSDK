@@ -4,6 +4,7 @@
 	using System.Collections.Generic;
 	using System.Net.Http;
 	using System.Text.Json;
+	using System.Text.Json.Serialization;
 	using System.Threading;
 	using System.Threading.Tasks;
 
@@ -34,6 +35,58 @@
 			CancellationToken cancellationToken = default)
 			where TRequest : notnull
 		{
+			var httpResponse = await GetHttpResponseAsync(request, cancellationToken);
+
+			if (httpResponse.IsSuccessStatusCode)
+			{
+				string content = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+				return SailthruResponse<TResponse>.Success(
+					await JsonSerializer.DeserializeAsync<TResponse>(
+						await httpResponse.Content.ReadAsStreamAsync(),
+						_jsonOptions,
+						cancellationToken: cancellationToken
+					)
+				);
+			}
+
+			var error = await JsonSerializer.DeserializeAsync<Error>(
+				await httpResponse.Content.ReadAsStreamAsync(),
+				_jsonOptions,
+				cancellationToken: cancellationToken)
+				?? new Error { Code = -1, Message = "Unknown error response." };
+
+			return SailthruResponse<TResponse>.Failure(new SailthruError(error.Code, error.Message));
+		}
+
+		internal async Task<SailthruResponse> SendAsync<TRequest>(
+			SailthruRequest<TRequest> request,
+			CancellationToken cancellationToken = default)
+			where TRequest : notnull
+		{
+			var httpResponse = await GetHttpResponseAsync(request, cancellationToken);
+
+			if (httpResponse.IsSuccessStatusCode)
+			{
+				string content = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+				return SailthruResponse.Success();
+			}
+
+			var error = await JsonSerializer.DeserializeAsync<Error>(
+				await httpResponse.Content.ReadAsStreamAsync(),
+				_jsonOptions,
+				cancellationToken: cancellationToken)
+				?? new Error { Code = -1, Message = "Unknown error response." };
+
+			return SailthruResponse.Failure(new SailthruError(error.Code, error.Message));
+		}
+
+		async Task<HttpResponseMessage> GetHttpResponseAsync<TRequest>(
+			SailthruRequest<TRequest> request,
+			CancellationToken cancellationToken)
+			where TRequest : notnull
+		{
 			Ensure.IsNotNull(request, nameof(request));
 
 			string json = JsonSerializer.Serialize(request.Model, _jsonOptions);
@@ -62,22 +115,15 @@
 			var httpResponse = await _http.SendAsync(httpRequest, cancellationToken)
 				.ConfigureAwait(false);
 
-			if (httpResponse.IsSuccessStatusCode)
-			{
-				string content = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+			return httpResponse;
+		}
 
-				return SailthruResponse<TResponse>.Success(
-					await JsonSerializer.DeserializeAsync<TResponse>(
-						await httpResponse.Content.ReadAsStreamAsync(),
-						_jsonOptions,
-						cancellationToken: cancellationToken
-					)
-				);
-			}
-
-			string error = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-			return SailthruResponse<TResponse>.Error();
+		public class Error
+		{
+			[JsonPropertyName("error")]
+			public int Code { get; set; }
+			[JsonPropertyName("errormsg")]
+			public string Message { get; set; } = default!;
 		}
 	}
 }

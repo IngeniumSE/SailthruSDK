@@ -1,8 +1,10 @@
-﻿namespace SailthruSDK.User
+﻿namespace SailthruSDK
 {
 	using System.Net.Http;
 	using System.Threading;
 	using System.Threading.Tasks;
+
+	using SailthruSDK.User;
 
 	/// <summary>
 	/// Provides extensions for managing Sailthru users.
