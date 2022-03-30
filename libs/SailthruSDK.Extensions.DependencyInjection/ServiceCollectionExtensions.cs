@@ -70,6 +70,7 @@
 			Ensure.IsNotNull(configuration, nameof(configuration));
 
 			services.Configure<SailthruSettings>(configuration.GetSection(SailthruSettings.ConfigurationSection));
+			services.AddSingleton(sp => sp.GetRequiredService<IOptions<SailthruSettings>>().Value);
 
 			AddCoreServices(services);
 

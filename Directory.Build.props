@@ -1,3 +1,7 @@
 <Project>
 	<Import Project="./build/build.props" />
+
+	<PropertyGroup>
+		<MinVerMinimumMajorMinor>0.3</MinVerMinimumMajorMinor>
+	</PropertyGroup>
 </Project>
