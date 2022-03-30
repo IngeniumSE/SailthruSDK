@@ -70,7 +70,6 @@
 			Ensure.IsNotNull(configuration, nameof(configuration));
 
 			services.Configure<SailthruSettings>(configuration.GetSection(SailthruSettings.ConfigurationSection));
-			services.AddSingleton(sp => sp.GetRequiredService<IOptions<SailthruSettings>>().Value);
 
 			AddCoreServices(services);
 
@@ -82,6 +81,8 @@
 			services.AddHttpClient<SailthruClient>(
 				"Sailthru",
 				(sp, http) => ConfigureHttpClient(sp, http));
+
+			services.AddSingleton(sp => sp.GetRequiredService<IOptions<SailthruSettings>>().Value);
 		}
 
 		static void ConfigureHttpClient(IServiceProvider services, HttpClient http)
