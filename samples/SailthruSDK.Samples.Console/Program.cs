@@ -36,34 +36,24 @@
 			//);
 
 			//var user = await client.UpsertUserAsync(
-			//	"me+spaseekers@matthewabbott.dev",
-			//	optOutEmailStatus: OptOutStatus.All,
+			//	"me@matthewabbott.dev",
 			//	keys: new Map<string>
 			//	{
 			//		[SailthruUserKeyType.Email] = "me@matthewabbott.dev"
 			//	},
 			//	keyConflict: KeyConflict.Merge,
-			//	fields: new SailthruUserFields
+			//	cookies: new Map<string>
 			//	{
-			//		Activity = true,
-			//		Engagement = true,
-			//		Device = true,
-			//		Keys = true,
-			//		Lists = true,
-			//		Lifetime = true,
-			//		OptOutStatus = true,
-			//		PurchaseIncomplete = 10,
-			//		Purchases = 10,
-			//		SmartLists = true,
-			//		Vars = true
+			//		["sailthru_bid"] = "28309054.31001"
 			//	});
 
 			var response = await client.UpsertPurchaseAsync(
-				"me+spaseekers@matthewabbott.dev",
+				"me+sailthru@matthewabbott.dev",
 				new[] {
 					new PurchaseItem("MonetaryVoucher-50", "£50.00 - Voucher", 5000, 1, "https://www.spaseekers.com/spa-vouchers?value=50.00")
 				},
-				incomplete: false
+				incomplete: false,
+				messageId: "28309054.31001"
 				);
 		}
 

@@ -13,11 +13,12 @@
 			string email,
 			PurchaseItem[] items,
 			bool incomplete = false,
+			string? messageId = default,
 			CancellationToken cancellationToken = default)
 		{
 			Ensure.IsNotNull(client, nameof(client));
 			
-			var model = new UpsertPurchaseRequest(email, items, incomplete);
+			var model = new UpsertPurchaseRequest(email, items, incomplete, messageId);
 			var request = new SailthruRequest<UpsertPurchaseRequest>(
 				HttpMethod.Post,
 				SailthruEndpoints.Purchase,

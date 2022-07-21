@@ -16,14 +16,17 @@ namespace SailthruSDK.Purchase
 		/// <param name="email">The user email address</param>
 		/// <param name="items">The set of items.</param>
 		/// <param name="incomplete">Specifies whether the purchase is incomplete (e.g. an active cart, not an order)</param>
+		/// <param name="messageId">The message ID representing the email campaign. This is usually stored in the sailthru_bid cookie.</param>
 		public UpsertPurchaseRequest(
 			string email,
 			PurchaseItem[] items,
-			bool incomplete = false)
+			bool incomplete = false,
+			string? messageId = default)
 		{
 			Email = Ensure.IsNotNullOrEmpty(email, nameof(email));
 			Items = Ensure.IsNotNull(items, nameof(items));
 			Incomplete = incomplete;
+			MessageId = messageId;
 		}
 
 		/// <summary>
@@ -40,6 +43,11 @@ namespace SailthruSDK.Purchase
 		/// Gets the set of purchase items.
 		/// </summary>
 		public PurchaseItem[] Items { get; }
+
+		/// <summary>
+		/// Gets the message campaign ID. This is usually stored in the sailthru_bid cookie.
+		/// </summary>
+		public string? MessageId { get; }
 
 		internal class Convereter : ConverterBase<UpsertPurchaseRequest>
 		{
@@ -62,6 +70,7 @@ namespace SailthruSDK.Purchase
 
 					writer.WriteStringProperty("email", value.Email, options);
 					writer.WriteBooleanProperty("incomplete", value.Incomplete, options);
+					writer.WriteStringProperty("message_id", value.MessageId ?? "", options);
 
 					writer.WritePropertyName("items");
 					writer.WriteStartArray();
