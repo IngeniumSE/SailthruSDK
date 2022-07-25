@@ -70,7 +70,7 @@ namespace SailthruSDK.Purchase
 
 					writer.WriteStringProperty("email", value.Email, options);
 					writer.WriteBooleanProperty("incomplete", value.Incomplete, options);
-					writer.WriteStringProperty("message_id", value.MessageId ?? "", options);
+					writer.WriteStringProperty("message_id", value.MessageId ?? default, options);
 
 					writer.WritePropertyName("items");
 					writer.WriteStartArray();
