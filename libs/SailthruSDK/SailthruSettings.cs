@@ -27,6 +27,16 @@
 		public string BaseUrl { get; set; } = "https://api.sailthru.com";
 
 		/// <summary>
+		/// Gets or sets whether to capture request content.
+		/// </summary>
+		public bool CaptureRequestContent { get; set; }
+
+		/// <summary>
+		/// Gets or sets whether to capture response content.
+		/// </summary>
+		public bool CaptureResponseContent { get; set; }
+
+		/// <summary>
 		/// Returns the settings as an options instance.
 		/// </summary>
 		/// <returns>The options instance.</returns>

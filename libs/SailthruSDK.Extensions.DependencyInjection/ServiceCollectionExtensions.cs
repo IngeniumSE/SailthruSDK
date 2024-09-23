@@ -10,6 +10,7 @@
 	using Microsoft.Extensions.Options;
 
 	using SailthruSDK;
+	using SailthruSDK.Api;
 
 	/// <summary>
 	/// Provides extensions for the <see cref="IServiceCollection"/>
@@ -78,20 +79,44 @@
 
 		static void AddCoreServices(IServiceCollection services)
 		{
-			services.AddHttpClient<SailthruClient>(
-				"Sailthru",
-				(sp, http) => ConfigureHttpClient(sp, http));
+			services.AddSingleton(sp =>
+			{
+				var settings = sp.GetRequiredService<IOptions<SailthruSettings>>().Value;
 
-			services.AddSingleton(sp => sp.GetRequiredService<IOptions<SailthruSettings>>().Value);
+				settings.Validate();
+
+				return settings;
+			});
+
+			services.AddScoped<ISailthruHttpClientFactory, SailthruHttpClientFactory>();
+			services.AddScoped<ISailthruApiClientFactory, SailthruApiClientFactory>();
+
+			AddApiClient(
+				services,
+				SailthruApiConstants.DefaultSailthruApiClient,
+				(cf, settings) => cf.CreateApiClient(settings, SailthruApiConstants.DefaultSailthruApiClient));
 		}
 
-		static void ConfigureHttpClient(IServiceProvider services, HttpClient http)
+		static void AddApiClient<TClient>(
+			IServiceCollection services,
+			string name,
+			Func<ISailthruApiClientFactory, SailthruSettings, TClient> factory)
+			where TClient : class
 		{
-			var settings = services.GetRequiredService<IOptions<SailthruSettings>>().Value;
-			SailthruSettingsValidator.Instance.ValidateAndThrow(settings);
+			void ConfigureHttpDefaults(HttpClient http)
+			{
+				http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			}
 
-			http.BaseAddress = new Uri(settings.BaseUrl);
-			http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			services.AddHttpClient(name, ConfigureHttpDefaults);
+
+			services.AddScoped(sp =>
+			{
+				var settings = sp.GetRequiredService<SailthruSettings>();
+				var clientFactory = sp.GetRequiredService<ISailthruApiClientFactory>();
+
+				return factory(clientFactory, settings);
+			});
 		}
 	}
 }

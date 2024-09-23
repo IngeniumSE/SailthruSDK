@@ -59,4 +59,33 @@
 			}
 		}
 	}
+
+	internal class  StringMapConverter : MapConverter<string?>
+	{
+		public override Map<string?>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+		{
+			var map = new Map<string?>();
+			var source = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(ref reader, options);
+			if (source is { Count: > 0 })
+			{
+				foreach (var pair in source)
+				{
+					if (pair.Value.ValueKind == JsonValueKind.Null)
+					{
+						map.Add(pair.Key, "");
+					}
+					else if (pair.Value.ValueKind == JsonValueKind.String)
+					{
+						map.Add(pair.Key, pair.Value.GetString());
+					}
+					else
+					{
+						map.Add(pair.Key, pair.Value.GetRawText());
+					}
+				}
+			}
+
+			return map;
+		}
+	}
 }

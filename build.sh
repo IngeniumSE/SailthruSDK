@@ -1,5 +1,9 @@
 #!/bin/bash
 
-cd ./build/apps/build
+# Install dotnet tools
+cd ./build
+dotnet tool restore
 
-dotnet run --target ${1:-Default}
+# Run our build app
+cd ./apps/Build
+dotnet run $@

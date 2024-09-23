@@ -48,7 +48,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{D4D1448C-4
 		build.sh = build.sh
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
+		LICENSE = LICENSE
+		NuGet.config = NuGet.config
 		README.md = README.md
+		RELEASE_NOTES.md = RELEASE_NOTES.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{89340FB5-E457-4182-A510-7F1D8DD97371}"
@@ -59,7 +63,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SailthruSDK.Extensions.Depe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{0876C34F-5AAD-405F-9303-90145D7744CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SailthruSDK.Samples.Console", "samples\SailthruSDK.Samples.Console\SailthruSDK.Samples.Console.csproj", "{5CEF974B-EAA0-4DB2-9812-C8EFB74ACC96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SailthruSDK.Samples.Console", "samples\SailthruSDK.Samples.Console\SailthruSDK.Samples.Console.csproj", "{5CEF974B-EAA0-4DB2-9812-C8EFB74ACC96}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{243C0586-E944-42F3-818F-2C4C2526BEC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{AC001CAE-9827-45E4-845D-F73C3A5AE5DB}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\main.yml = .github\workflows\main.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,6 +116,7 @@ Global
 		{2E0DE426-D135-4710-80B5-173338D364C6} = {89340FB5-E457-4182-A510-7F1D8DD97371}
 		{806DCE4B-D0BD-4AA5-B8BC-502B69ABFAF3} = {3E233261-9EBB-4F79-B840-BD73052C8428}
 		{5CEF974B-EAA0-4DB2-9812-C8EFB74ACC96} = {0876C34F-5AAD-405F-9303-90145D7744CF}
+		{AC001CAE-9827-45E4-845D-F73C3A5AE5DB} = {243C0586-E944-42F3-818F-2C4C2526BEC4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7D62062-4558-4545-9EE0-3A9B24CFD70D}

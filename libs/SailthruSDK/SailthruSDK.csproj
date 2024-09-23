@@ -1,14 +1,47 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>SailthruSDK</RootNamespace>
+		<ImplicitPackageReferences>false</ImplicitPackageReferences>
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Purchase\**" />
+	  <Compile Remove="User\**" />
+	  <EmbeddedResource Remove="Purchase\**" />
+	  <EmbeddedResource Remove="User\**" />
+	  <None Remove="Purchase\**" />
+	  <None Remove="User\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Ben.Demystifier" />
 		<PackageReference Include="FluentValidation" />
+		<PackageReference Include="MinVer" />
 		<PackageReference Include="Microsoft.Extensions.Http" />
+		<PackageReference Include="Microsoft.Extensions.Options" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+		<PackageReference Include="System.Net.Http.Json" />
 		<PackageReference Include="System.Text.Json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

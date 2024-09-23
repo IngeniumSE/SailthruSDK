@@ -1,4 +1,4 @@
-﻿namespace SailthruSDK.User
+﻿namespace SailthruSDK
 {
 	/// <summary>
 	/// Represents the possible opt-out status.

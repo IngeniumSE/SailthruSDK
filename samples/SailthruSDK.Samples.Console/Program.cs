@@ -6,8 +6,7 @@
 
 	using Microsoft.Extensions.Configuration;
 
-	using SailthruSDK.Purchase;
-	using SailthruSDK.User;
+	using SailthruSDK.Api;
 
 	class Program
 	{
@@ -15,11 +14,12 @@
 		{
 			var settings = GetSettings();
 			var http = GetHttpClient(settings);
-			var client = new SailthruClient(http, settings);
+			var client = new SailthruApiClient(http, settings);
 
-			//var user = await client.GetUserAsync(
+			//var response = await client.Users.GetUserAsync(
 			//	"me+spaseekers@matthewabbott.dev",
-			//	fields: new SailthruUserFields
+			//	key: UserKeyType.Email,
+			//	fields: new UserFields
 			//	{
 			//		Activity = true,
 			//		Engagement = true,
@@ -32,29 +32,44 @@
 			//		Purchases = 10,
 			//		SmartLists = true,
 			//		Vars = true
-			//	}
-			//);
-
-			//var user = await client.UpsertUserAsync(
-			//	"me@matthewabbott.dev",
-			//	keys: new Map<string>
-			//	{
-			//		[SailthruUserKeyType.Email] = "me@matthewabbott.dev"
-			//	},
-			//	keyConflict: KeyConflict.Merge,
-			//	cookies: new Map<string>
-			//	{
-			//		["sailthru_bid"] = "28309054.31001"
 			//	});
 
-			var response = await client.UpsertPurchaseAsync(
-				"me+sailthru@matthewabbott.dev",
-				new[] {
-					new PurchaseItem("MonetaryVoucher-50", "£50.00 - Voucher", 5000, 1, "https://www.spaseekers.com/spa-vouchers?value=50.00")
+			var response = await client.Users.UpsertUserAsync(
+				"me@matthewabbott.dev",
+				keys: new Map<string>
+				{
+					[UserKeyType.Email] = "me@matthewabbott.dev"
 				},
-				incomplete: false,
-				messageId: "28309054.31001"
-				);
+				keyConflict: KeyConflict.Merge,
+				cookies: new Map<string>
+				{
+					["sailthru_bid"] = "28309054.31001"
+				});
+
+			//var response = await client.Purchases.UpsertPurchaseAsync(
+			//	"me+sailthru@matthewabbott.dev",
+			//	[
+			//		new PurchaseItem
+			//		{
+			//			Id = "MonetaryVoucher-50",
+			//			Title = "£50.00 - Voucher",
+			//			Price = 5000,
+			//			Quantity = 1,
+			//			Url = "https://www.spaseekers.com/spa-vouchers?value=50.00",
+			//			Images = new[]
+			//			{
+			//				new PurchaseImage
+			//				{
+			//					Full = new PurchaseImageUrl
+			//					{
+			//						Url = "https://spaseekers.imgix.net/m/0/spaseekers-gift-vouchers-2022.jpg"
+			//					}
+			//				}
+			//			}
+			//		}
+			//	],
+			//	incomplete: true,
+			//	messageId: "28309054.31001");
 		}
 
 		static SailthruSettings GetSettings()

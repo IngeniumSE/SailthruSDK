@@ -1,37 +1,51 @@
-﻿namespace SailthruSDK
+﻿namespace SailthruSDK;
+
+using System.Net.Http;
+
+/// <summary>
+/// Represents a request to a Sailthru API resource.
+/// </summary>
+/// <param name="method">The HTTP method.</param>
+/// <param name="resource">The relative resource.</param>
+/// <param name="query">The query string.</param>
+public class SailthruRequest(
+	HttpMethod method,
+	PathString resource,
+	QueryString? query = null)
 {
-	using System.Net.Http;
+	/// <summary>
+	/// Gets the HTTP method for the request.
+	/// </summary>
+	public HttpMethod Method => method;
 
 	/// <summary>
-	/// Represents a Sailthru request.
+	/// Gets the relative resource for the request.
 	/// </summary>
-	/// <typeparam name="TRequest">The request type.</typeparam>
-	public class SailthruRequest<TRequest>
-		where TRequest : notnull
-	{
-		public SailthruRequest(
-			HttpMethod method,
-			string endpoint,
-			TRequest model)
-		{
-			Method = method;
-			Endpoint = Ensure.IsNotNullOrEmpty(endpoint, nameof(endpoint));
-			Model = Ensure.IsNotNull(model, nameof(model));
-		}
+	public PathString Resource => resource;
 
-		/// <summary>
-		/// Gets the Sailthru endpoint.
-		/// </summary>
-		public string Endpoint { get; }
-
-		/// <summary>
-		/// Gets the HTTP method.
-		/// </summary>
-		public HttpMethod Method { get; }
-
-		/// <summary>
-		/// Gets the model.
-		/// </summary>
-		public TRequest Model {  get; }
-	}
+	/// <summary>
+	/// Gets the query string.
+	/// </summary>
+	public QueryString? Query => query;
 }
+
+/// <summary>
+/// Represents a request to a Sailthru API resource.
+/// </summary>
+/// <param name="method">The HTTP method.</param>
+/// <param name="resource">The relative resource.</param>
+/// <param name="data">The data.</param>
+/// <typeparam name="TData">The data type.</typeparam>
+public class SailthruRequest<TData>(
+	HttpMethod method,
+	PathString resource,
+	TData data,
+	QueryString? query = null) : SailthruRequest(method, resource, query)
+	where TData : notnull
+{
+	/// <summary>
+	/// Gets the model for the request.
+	/// </summary>
+	public TData Data => data;
+}
+
