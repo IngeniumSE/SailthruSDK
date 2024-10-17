@@ -187,7 +187,7 @@ public class UpsertPurchaseRequest
 
 					writer.WriteStringProperty("id", item.Id, options);
 					writer.WriteStringProperty("title", item.Title, options);
-					writer.WriteNumberProperty("price", (int)(item.Price * 100), options);
+					writer.WriteNumberProperty("price", item.Price, options);
 					writer.WriteNumberProperty("qty", item.Quantity, options);
 					writer.WriteStringProperty("url", item.Url, options);
 
