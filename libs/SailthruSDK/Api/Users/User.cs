@@ -445,4 +445,19 @@
 			}
 		}
 	}
+
+	public class DeleteUserRequest(
+		string id,
+		string key = UserKeyType.Email)
+	{
+		/// <summary>
+		/// Gets the user ID.
+		/// </summary>
+		public string Id { get; } = Ensure.IsNotNullOrEmpty(id, nameof(id));
+
+		/// <summary>
+		/// Gets the key type.
+		/// </summary>
+		public string Key { get; } = Ensure.IsNotNullOrEmpty(key, nameof(key));
+	}
 }

@@ -1,6 +1,8 @@
 ﻿// This work is licensed under the terms of the MIT license.
 // For a copy, see <https://opensource.org/licenses/MIT>.
 
+using System.Reflection.Metadata.Ecma335;
+
 namespace SailthruSDK.Api;
 
 partial interface ISailthruApiClient
@@ -39,6 +41,11 @@ public partial interface IUserOperations
 			bool? optOutSms = default,
 			UserFields? fields = default,
 			CancellationToken cancellationToken = default);
+
+	Task<SailthruResponse> DeleteUserAsync(
+		string id,
+		string key = UserKeyType.Email,
+		CancellationToken cancellationToken = default);
 }
 
 public partial class UserOperations(
@@ -79,6 +86,20 @@ public partial class UserOperations(
 	{
 		var model = new UpsertUserRequest(id, key, keys, keyConflict, cookies, lists, templates, vars, optOutEmailStatus, optOutSms, fields);
 		var request = new SailthruRequest<UpsertUserRequest>(HttpMethod.Post, _path, model);
+
+		return await _client.SendAsync(
+			request,
+			cancellationToken)
+			.ConfigureAwait(false);
+	}
+
+	public async Task<SailthruResponse> DeleteUserAsync(
+		string id,
+		string key = UserKeyType.Email,
+		CancellationToken cancellationToken = default)
+	{
+		var model = new DeleteUserRequest(id, key);
+		var request = new SailthruRequest<DeleteUserRequest>(HttpMethod.Delete, _path, model);
 
 		return await _client.SendAsync(
 			request,

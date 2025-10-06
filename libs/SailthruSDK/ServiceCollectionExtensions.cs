@@ -1,16 +1,16 @@
-﻿namespace Microsoft.Extensions.DependencyInjection
+﻿// This work is licensed under the terms of the MIT license.
+// For a copy, see <https://opensource.org/licenses/MIT>.
+
+namespace Microsoft.Extensions.DependencyInjection
 {
 	using System;
 	using System.Net.Http;
 	using System.Net.Http.Headers;
 
-	using FluentValidation;
-
 	using Microsoft.Extensions.Configuration;
 	using Microsoft.Extensions.Options;
 
 	using SailthruSDK;
-	using SailthruSDK.Api;
 
 	/// <summary>
 	/// Provides extensions for the <see cref="IServiceCollection"/>
