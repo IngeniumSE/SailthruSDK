@@ -307,31 +307,6 @@ public abstract class ApiClient
 		HttpResponseMessage response,
 		CancellationToken cancellationToken = default)
 	{
-		async Task<Error> GetSailthruError()
-		{
-			Error error;
-			if (response.Content is not null)
-			{
-				var result = await response.Content.ReadFromJsonAsync<ErrorContainer>(cancellationToken)
-					.ConfigureAwait(false);
-
-				if (result?.Message is not { Length: > 0 })
-				{
-					error = new(Resources.ApiClient_UnknownResponse, result?.Errors);
-				}
-				else
-				{
-					error = new(result.Message, result.Errors);
-				}
-			}
-			else
-			{
-				error = new Error(Resources.ApiClient_NoErrorMessage);
-			}
-
-			return error;
-		}
-
 		if (response.IsSuccessStatusCode)
 		{
 			return new SailthruResponse(
@@ -342,7 +317,8 @@ public abstract class ApiClient
 		}
 		else
 		{
-			Error? error = await GetSailthruError();
+			Error? error = await ReadErrorAsync(response)
+				.ConfigureAwait(false);
 
 			return new SailthruResponse(
 				method,
@@ -361,32 +337,6 @@ public abstract class ApiClient
 		CancellationToken cancellationToken = default)
 		where TResponse : class
 	{
-		async Task<Error> GetSailthruError()
-		{
-			Error error;
-			if (response.Content is not null)
-			{
-				var result = await response.Content.ReadFromJsonAsync<ErrorContainer>(
-					(JsonSerializerOptions?)null, cancellationToken)
-					.ConfigureAwait(false);
-
-				if (result?.Message is not { Length: > 0 })
-				{
-					error = new(Resources.ApiClient_UnknownResponse, result?.Errors);
-				}
-				else
-				{
-					error = new(result.Message, result.Errors);
-				}
-			}
-			else
-			{
-				error = new Error(Resources.ApiClient_NoErrorMessage);
-			}
-
-			return error;
-		}
-
 		if (response.IsSuccessStatusCode)
 		{
 			TResponse? data = default;
@@ -407,7 +357,8 @@ public abstract class ApiClient
 		}
 		else
 		{
-			Error? error = await GetSailthruError();
+			Error? error = await ReadErrorAsync(response)
+				.ConfigureAwait(false);
 
 			return new SailthruResponse<TResponse>(
 				method,
@@ -424,13 +375,93 @@ public abstract class ApiClient
 		? values.First()
 		: null;
 
-	class ErrorContainer
+	/// <summary>
+	/// Reads the error from an unsuccessful response. Never throws for a malformed or non-JSON body.
+	/// </summary>
+	internal static async Task<Error> ReadErrorAsync(HttpResponseMessage response)
 	{
-		[JsonPropertyName("errors")]
-		public Dictionary<string, string[]>? Errors { get; set; }
+		if (response.Content is null)
+		{
+			return new Error(Resources.ApiClient_NoErrorMessage);
+		}
 
-		[JsonPropertyName("message")]
-		public string Message { get; set; } = default!;
+		string body = await response.Content.ReadAsStringAsync()
+			.ConfigureAwait(false);
+
+		return ParseError(body);
+	}
+
+	/// <summary>
+	/// Parses a Sailthru error body: <c>{ "error": 14, "errormsg": "..." }</c>.
+	/// A <c>message</c> / <c>errors</c> body is also accepted.
+	/// </summary>
+	/// <param name="body">The response body.</param>
+	/// <returns>The error.</returns>
+	public static Error ParseError(string? body)
+	{
+		if (body is not { Length: > 0 } || string.IsNullOrWhiteSpace(body))
+		{
+			return new Error(Resources.ApiClient_NoErrorMessage);
+		}
+
+		try
+		{
+			using var document = JsonDocument.Parse(body);
+			var root = document.RootElement;
+
+			if (root.ValueKind == JsonValueKind.Object)
+			{
+				int? code = root.TryGetProperty("error", out var codeElement)
+					&& codeElement.ValueKind == JsonValueKind.Number
+					&& codeElement.TryGetInt32(out var number)
+					? number
+					: null;
+
+				string? message = GetString(root, "errormsg") ?? GetString(root, "message");
+
+				return new Error(
+					code,
+					message ?? Resources.ApiClient_UnknownResponse,
+					GetErrors(root));
+			}
+		}
+		catch (JsonException)
+		{
+			// Not JSON (e.g. a proxy error page).
+		}
+
+		return new Error(Resources.ApiClient_UnknownResponse);
+
+		static string? GetString(JsonElement root, string name)
+			=> root.TryGetProperty(name, out var element)
+				&& element.ValueKind == JsonValueKind.String
+				&& element.GetString() is { Length: > 0 } value
+				? value
+				: null;
+
+		static Dictionary<string, string[]>? GetErrors(JsonElement root)
+		{
+			if (!root.TryGetProperty("errors", out var element) || element.ValueKind != JsonValueKind.Object)
+			{
+				return null;
+			}
+
+			var errors = new Dictionary<string, string[]>();
+			foreach (var property in element.EnumerateObject())
+			{
+				errors[property.Name] = property.Value.ValueKind switch
+				{
+					JsonValueKind.Array => property.Value.EnumerateArray()
+						.Where(v => v.ValueKind == JsonValueKind.String)
+						.Select(v => v.GetString()!)
+						.ToArray(),
+					JsonValueKind.String => [property.Value.GetString()!],
+					_ => [property.Value.GetRawText()]
+				};
+			}
+
+			return errors;
+		}
 	}
 	#endregion
 
