@@ -104,5 +104,14 @@ namespace SailthruSDK {
                 return ResourceManager.GetString("TrybeSettingsValidator_ApiKey_ValidationMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An incomplete purchase cannot have an extid; Sailthru rejects it..
+        /// </summary>
+        internal static string UpsertPurchaseRequest_IncompleteWithExtId {
+            get {
+                return ResourceManager.GetString("UpsertPurchaseRequest_IncompleteWithExtId", resourceCulture);
+            }
+        }
     }
 }

@@ -113,6 +113,30 @@ Error? error = default) : SailthruResponse(method, uri, isSuccess, statusCode, e
 public class Error(string message, Dictionary<string, string[]>? errors = null, Exception? exception = null)
 {
 	/// <summary>
+	/// The start of Sailthru's error message when a purchase with the same extid already exists:
+	/// "Duplicate extid: [extid] ID already exists".
+	/// </summary>
+	public const string DuplicateExtIdMessage = "Duplicate extid";
+
+	/// <summary>
+	/// Initialises a new instance of <see cref="Error"/> with Sailthru's numeric error code.
+	/// </summary>
+	/// <param name="code">The Sailthru error code (the <c>error</c> value of the response), if available.</param>
+	/// <param name="message">The error message (the <c>errormsg</c> value of the response).</param>
+	/// <param name="errors">The set of additional error messages, these may be field specific.</param>
+	/// <param name="exception">The exception that was caught.</param>
+	public Error(int? code, string message, Dictionary<string, string[]>? errors = null, Exception? exception = null)
+		: this(message, errors, exception)
+	{
+		Code = code;
+	}
+
+	/// <summary>
+	/// Gets the Sailthru error code (the <c>error</c> value of the response), if available.
+	/// </summary>
+	public int? Code { get; }
+
+	/// <summary>
 	/// Gets the set of additional error messages, these may be field specific.
 	/// </summary>
 	public Dictionary<string, string[]>? Errors => errors;
@@ -126,4 +150,79 @@ public class Error(string message, Dictionary<string, string[]>? errors = null, 
 	/// Gets the error message.
 	/// </summary>
 	public string Message => message;
+
+	/// <summary>
+	/// Gets whether Sailthru rejected a purchase because a purchase with the same extid already exists.
+	/// For a retried purchase this means Sailthru already has it.
+	/// </summary>
+	public bool IsDuplicateExtId
+		=> Message is { Length: > 0 } && Message.IndexOf(DuplicateExtIdMessage, StringComparison.OrdinalIgnoreCase) >= 0;
+
+	/// <inheritdoc />
+	public override string ToString()
+		=> Code.HasValue ? $"Sailthru error {Code.Value}: {Message}" : Message;
+}
+
+/// <summary>
+/// Represents an unsuccessful Sailthru API response, thrown by <see cref="SailthruResponseExtensions.EnsureSuccess{TResponse}(TResponse)"/>.
+/// </summary>
+public class SailthruException : Exception
+{
+	/// <summary>
+	/// Initialises a new instance of <see cref="SailthruException"/>.
+	/// </summary>
+	/// <param name="response">The unsuccessful response.</param>
+	public SailthruException(SailthruResponse response)
+		: base(
+			Ensure.IsNotNull(response, nameof(response)).Error?.ToString() ?? $"The Sailthru API returned HTTP {(int)response.StatusCode}.",
+			response.Error?.Exception)
+	{
+		Response = response;
+	}
+
+	/// <summary>
+	/// Gets the response.
+	/// </summary>
+	public SailthruResponse Response { get; }
+
+	/// <summary>
+	/// Gets the error, if available.
+	/// </summary>
+	public Error? Error => Response.Error;
+
+	/// <summary>
+	/// Gets the Sailthru error code, if available.
+	/// </summary>
+	public int? Code => Response.Error?.Code;
+
+	/// <summary>
+	/// Gets the HTTP status code (0 if no response was received).
+	/// </summary>
+	public HttpStatusCode StatusCode => Response.StatusCode;
+}
+
+/// <summary>
+/// Provides extensions for the <see cref="SailthruResponse"/> type.
+/// </summary>
+public static class SailthruResponseExtensions
+{
+	/// <summary>
+	/// Throws a <see cref="SailthruException"/> if the response is not successful.
+	/// </summary>
+	/// <typeparam name="TResponse">The response type.</typeparam>
+	/// <param name="response">The response.</param>
+	/// <returns>The response, if successful.</returns>
+	/// <exception cref="SailthruException">The response is not successful.</exception>
+	public static TResponse EnsureSuccess<TResponse>(this TResponse response)
+		where TResponse : SailthruResponse
+	{
+		Ensure.IsNotNull(response, nameof(response));
+
+		if (!response.IsSuccess)
+		{
+			throw new SailthruException(response);
+		}
+
+		return response;
+	}
 }

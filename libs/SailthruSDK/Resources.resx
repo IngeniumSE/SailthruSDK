@@ -129,6 +129,9 @@
   <data name="PathString_MustStartWithSlash" xml:space="preserve">
     <value>A path string must start with a slash '/'.</value>
   </data>
+  <data name="UpsertPurchaseRequest_IncompleteWithExtId" xml:space="preserve">
+    <value>An incomplete purchase cannot have an extid; Sailthru rejects it.</value>
+  </data>
   <data name="TrybeSettingsValidator_ApiKey_ValidationMessage" xml:space="preserve">
     <value>A Sailthru API key must be provided.</value>
   </data>
